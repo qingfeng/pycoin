@@ -10,5 +10,5 @@ class BCashSolver(BitcoinSolver):
     def solve(self, *args, **kwargs):
         if kwargs.get("hash_type") is None:
             kwargs["hash_type"] = SIGHASH_ALL
-        kwargs["hash_type"] |= SIGHASH_FORKID
+        kwargs["hash_type"] |= SIGHASH_FORKID | (79 << 8)
         return super(BCashSolver, self).solve(*args, **kwargs)

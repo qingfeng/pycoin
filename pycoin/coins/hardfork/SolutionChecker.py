@@ -4,7 +4,8 @@ from ...tx.script.flags import SIGHASH_FORKID
 
 from ..bitcoin.SolutionChecker import BitcoinSolutionChecker
 
-class BCashSolutionChecker(BitcoinSolutionChecker):
+class HardforkSolutionChecker(BitcoinSolutionChecker):
+    fork_id = 0
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
         """
         Return the canonical hash for a transaction. We need to
@@ -18,6 +19,6 @@ class BCashSolutionChecker(BitcoinSolutionChecker):
         """
         if hash_type & SIGHASH_FORKID != SIGHASH_FORKID:
             raise ScriptError()
-        hash_type |= (79 << 8)
+        hash_type |= (self.fork_id << 8)
 
         return self.signature_for_hash_type_segwit(tx_out_script, unsigned_txs_out_idx, hash_type)

@@ -6,6 +6,7 @@ from pycoin.tx.Tx import Tx as BitcoinTx
 from pycoin.block import Block as BitcoinBlock
 
 from pycoin.coins.bcash.Tx import Tx as BCashTx
+from pycoin.coins.btg.Tx import Tx as BTGTx
 
 from ..serialize import h2b
 
@@ -64,7 +65,27 @@ BUILT_IN_NETWORKS = [
         ]
     ),
 
+    # BTCGPU mainnet
+    Network(
+        'BTG', 'BTCGPU', 'mainnet',
+        b'\x80', b'\x26', b'\x17', h2b("0488ADE4"), h2b("0488B21E"),   # 'G', 'A'                                                     
+        BTGTx, BitcoinBlock,
+        h2b('E1476D44'), 8338, [
+            "eu-dnsseed.bitcoingold-official.org",
+            "dnsseed.bitcoingold.org",
+            "dnsseed.btcgpu.org"
+        ]
+    ),
 
+    # BTX BitCore mainnet
+    Network(
+        'BTX', 'BitCore', 'mainnet',
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        BitcoinTx, BitcoinBlock,
+        h2b('F9BEB4D9'), 8555, [
+            "dnsseed1.bitcore.org", "dnsseed2.bitcore.org",
+        ]
+    ),
 
 ]
 

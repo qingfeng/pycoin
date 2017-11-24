@@ -14,6 +14,8 @@ setup(
         "pycoin.coins",
         "pycoin.coins.bcash",
         "pycoin.coins.bitcoin",
+        "pycoin.coins.hardfork",
+        "pycoin.coins.btg",        
         "pycoin.contrib",
         "pycoin.convention",
         "pycoin.ecdsa",

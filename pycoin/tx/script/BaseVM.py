@@ -83,7 +83,6 @@ class VM(object):
 
         while vmc.pc < len(vmc.script):
             class_.eval_instruction(vmc)
-
         f = getattr(vmc.traceback_f, "postscript", None)
         if f:
             f(vmc)
