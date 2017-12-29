@@ -233,6 +233,9 @@ class BitcoinSolutionChecker(SolutionChecker):
         return bytes(new_script)
 
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
+        return self.signature_for_hash_type_plainold(tx_out_script, unsigned_txs_out_idx, hash_type)
+
+    def signature_for_hash_type_plainold(self, tx_out_script, unsigned_txs_out_idx, hash_type):
         """
         Return the canonical hash for a transaction. We need to
         remove references to the signature, since it's a signature
@@ -293,7 +296,13 @@ class BitcoinSolutionChecker(SolutionChecker):
             txs_in = [txs_in[unsigned_txs_out_idx]]
 
         tmp_tx = self.tx.__class__(self.tx.version, txs_in, txs_out, self.tx.lock_time)
-        return from_bytes_32(tmp_tx.hash(hash_type=hash_type))
+        preimage = self.plainold_signature_preimage(
+            tmp_tx, hash_type=hash_type)
+        return from_bytes_32(double_sha256(preimage))
+
+    def append_signature(self, s):
+        # Some fork coin can prepend staffs to hash staff
+        pass
 
     def hash_prevouts(self, hash_type):
         if hash_type & SIGHASH_ANYONECANPAY:
@@ -347,6 +356,15 @@ class BitcoinSolutionChecker(SolutionChecker):
         f.write(self.hash_outputs(hash_type, tx_in_idx))
         stream_struct("L", f, self.tx.lock_time)
         stream_struct("L", f, hash_type)
+        self.append_signature(f)
+        return f.getvalue()
+
+    def plainold_signature_preimage(self, tx, hash_type=None):
+        f = io.BytesIO()
+        tx.stream(f, include_witness_data=False)
+        if hash_type is not None:
+            stream_struct("L", f, hash_type)
+        self.append_signature(f)
         return f.getvalue()
 
     def signature_for_hash_type_segwit(self, script, tx_in_idx, hash_type):

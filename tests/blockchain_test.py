@@ -132,7 +132,7 @@ def test_fork():
     BC = BlockChain(parent_for_0)
     ITEMS = dict((i, FakeBlock(i)) for i in range(7))
     ITEMS[0] = FakeBlock(0, parent_for_0)
-    
+
 
     ITEMS.update(dict((i, FakeBlock(i)) for i in range(301, 306)))
     ITEMS[301] = FakeBlock(301, 3)

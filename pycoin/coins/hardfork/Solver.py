@@ -1,5 +1,5 @@
 from ..bitcoin.Solver import BitcoinSolver
-from ...tx.script.flags import SIGHASH_FORKID
+from ...tx.script.flags import SIGHASH_FORKID, SIGHASH_ALL
 
 from .SolutionChecker import HardforkSolutionChecker
 

@@ -192,11 +192,15 @@ class Tx(object):
 
     def hash(self, hash_type=None):
         """Return the hash for this Tx object."""
+        s = self.hash_staff(hash_type=None)
+        return double_sha256(s.getvalue())
+
+    def hash_staff(self, hash_type=None):
         s = io.BytesIO()
         self.stream(s, include_witness_data=False)
         if hash_type is not None:
             stream_struct("L", s, hash_type)
-        return double_sha256(s.getvalue())
+        return s
 
     def w_hash(self):
         return double_sha256(self.as_bin())

@@ -1,10 +1,10 @@
 
-from .SolutionChecker import HardforkSolutionChecker
-from .Solver import HardforkSolver
+from .SolutionChecker import BTGSolutionChecker
+from .Solver import BTGSolver
 
 from pycoin.tx.Tx import Tx as BaseTx
 
 
 class Tx(BaseTx):
-    Solver = HardforkSolver
-    SolutionChecker = HardforkSolutionChecker
+    Solver = BTGSolver
+    SolutionChecker = BTGSolutionChecker

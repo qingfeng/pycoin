@@ -7,6 +7,7 @@ from pycoin.block import Block as BitcoinBlock
 
 from pycoin.coins.bcash.Tx import Tx as BCashTx
 from pycoin.coins.btg.Tx import Tx as BTGTx
+from pycoin.coins.sbtc.Tx import Tx as SBTCTx
 
 from ..serialize import h2b
 
@@ -68,12 +69,24 @@ BUILT_IN_NETWORKS = [
     # BTCGPU mainnet
     Network(
         'BTG', 'BTCGPU', 'mainnet',
-        b'\x80', b'\x26', b'\x17', h2b("0488ADE4"), h2b("0488B21E"),   # 'G', 'A'                                                     
+        b'\x80', b'\x26', b'\x17', h2b("0488ADE4"), h2b("0488B21E"),   # 'G', 'A'
         BTGTx, BitcoinBlock,
         h2b('E1476D44'), 8338, [
             "eu-dnsseed.bitcoingold-official.org",
             "dnsseed.bitcoingold.org",
             "dnsseed.btcgpu.org"
+        ]
+    ),
+
+    # SBTC mainnet
+    Network(
+        'SBTC', 'SuperBitcoin', 'mainnet',
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        SBTCTx, BitcoinBlock,
+        h2b('E1476D44'), 8338, [
+            "seed.superbtca.com",
+            "seed.superbtca.info",
+            "seed.superbtc.org",
         ]
     ),
 
