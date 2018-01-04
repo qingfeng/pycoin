@@ -215,7 +215,7 @@ class Solver(object):
             tx_in_idx_set = range(len(self.tx.txs_in))
         if hash_type is None:
             hash_type = SIGHASH_ALL
-        self.tx.check_unspents()
+        #self.tx.check_unspents()
         for idx in sorted(tx_in_idx_set):
             if self.tx.is_signature_ok(idx):
                 continue
@@ -226,13 +226,13 @@ class Solver(object):
             except ScriptError:
                 try:
                     self.sign_tx_in(
-                        hash160_lookup, idx, self.tx.unspents[idx].script, hash_type=hash_type, **kwargs)
+                        hash160_lookup, idx, hash_type=hash_type, **kwargs)
                 except SolvingError:
                     pass
 
         return self
 
-    def sign_tx_in(self, hash160_lookup, tx_in_idx, tx_out_script, hash_type=None, **kwargs):
+    def sign_tx_in(self, hash160_lookup, tx_in_idx, hash_type=None, **kwargs):
         if hash_type is None:
             hash_type = self.SIGHASH_ALL
         r = self.solve(hash160_lookup, tx_in_idx, hash_type=hash_type, **kwargs)
