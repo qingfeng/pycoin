@@ -5,7 +5,7 @@ from setuptools import setup
 from pycoin.version import version
 
 setup(
-    name="pycoin",
+    name="pycoin-haobtc",
     version=version,
     packages=[
         "pycoin",
