@@ -8,6 +8,7 @@ from pycoin.block import Block as BitcoinBlock
 from pycoin.coins.bcash.Tx import Tx as BCashTx
 from pycoin.coins.btg.Tx import Tx as BTGTx
 from pycoin.coins.sbtc.Tx import Tx as SBTCTx
+from pycoin.coins.bcd.Tx import Tx as BCDTx
 
 from ..serialize import h2b
 
@@ -87,6 +88,18 @@ BUILT_IN_NETWORKS = [
             "seed.superbtca.com",
             "seed.superbtca.info",
             "seed.superbtc.org",
+        ]
+    ),
+
+    # BCD bitcoin diamond mainnet
+    Network(
+        'BCD', "BitcoinDiamond", "mainnet",
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        BCDTx, BitcoinBlock,
+        h2b('BDDEB4D9'), 7117, [
+            'dns1.btcd.io', 'dns2.btcd.io',
+            'dns3.btcd.io', 'dns4.btcd.io',
+            'dns5.btcd.io', 'dns6.btcd.io',
         ]
     ),
 
