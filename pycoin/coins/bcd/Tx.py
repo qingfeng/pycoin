@@ -1,6 +1,6 @@
 from pycoin.tx.Tx import Tx as BaseTx
 
-from ..serialize.bitcoin_streamer import (
+from ...serialize.bitcoin_streamer import (
     parse_struct, parse_bc_int, parse_bc_string,
     stream_struct, stream_bc_string
 )
@@ -14,6 +14,12 @@ class Tx(BaseTx):
     def __init__(self, version, txs_in, txs_out, lock_time=0, unspents=None, pre_block_hash=None):
         super(Tx, self).__init__(version, txs_in, txs_out, lock_time=0, unspents=None)
         self.pre_block_hash = pre_block_hash
+
+    def replace(self, **kwargs):
+        new_tx = super(Tx, self).replace(**kwargs)
+        new_tx.pre_block_hash = kwargs.get(
+            'pre_block_hash', self.pre_block_hash)
+        return new_tx
 
     def stream(self, f, blank_solutions=False, include_unspents=False, include_witness_data=True):
         """Stream a Bitcoin transaction Tx to the file-like object f."""
@@ -50,7 +56,7 @@ class Tx(BaseTx):
         txs_out = []
         version, = parse_struct("L", f)
         if version == 12:
-            pre_block_hash = parse_struct("#", f)
+            pre_block_hash, = parse_struct("#", f)
         else:
             pre_block_hash = None
 

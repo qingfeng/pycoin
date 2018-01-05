@@ -295,7 +295,8 @@ class BitcoinSolutionChecker(SolutionChecker):
         if hash_type & SIGHASH_ANYONECANPAY:
             txs_in = [txs_in[unsigned_txs_out_idx]]
 
-        tmp_tx = self.tx.__class__(self.tx.version, txs_in, txs_out, self.tx.lock_time)
+        #tmp_tx = self.tx.__class__(self.tx.version, txs_in, txs_out, self.tx.lock_time)
+        tmp_tx = self.tx.replace(txs_in=txs_in, txs_out=txs_out)
         preimage = self.plainold_signature_preimage(
             tmp_tx, hash_type=hash_type)
         return from_bytes_32(double_sha256(preimage))

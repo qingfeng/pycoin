@@ -151,6 +151,17 @@ class Tx(object):
         for tx_out in self.txs_out:
             assert type(tx_out) == self.TxOut
 
+    def replace(self, **kwargs):
+        version = kwargs.get('version', self.version)
+        txs_in = kwargs.get('txs_in', self.txs_in[:])
+        txs_out = kwargs.get('txs_out', self.txs_out[:])
+        lock_time = kwargs.get('lock_time', self.lock_time)
+        unspents = kwargs.get('unspents', self.unspents[:])
+        return self.__class__(
+            version, txs_in, txs_out,
+            lock_time=lock_time,
+            unspents=unspents)
+
     def stream(self, f, blank_solutions=False, include_unspents=False, include_witness_data=True):
         """Stream a Bitcoin transaction Tx to the file-like object f."""
         include_witnesses = include_witness_data and self.has_witness_data()
