@@ -10,5 +10,5 @@ class HardforkSolver(BitcoinSolver):
     def solve(self, *args, **kwargs):
         if kwargs.get("hash_type") is None:
             kwargs["hash_type"] = SIGHASH_ALL
-        kwargs["hash_type"] |= SIGHASH_FORKID | (self.SolutionChecker.fork_id << 8)
+        kwargs["hash_type"] |= self.SolutionsChecker.sighash_forkid | (self.SolutionChecker.fork_id << 8)
         return super(HardforkSolver, self).solve(*args, **kwargs)

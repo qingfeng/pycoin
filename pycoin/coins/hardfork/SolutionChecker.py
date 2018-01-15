@@ -7,6 +7,7 @@ from ..bitcoin.SolutionChecker import BitcoinSolutionChecker
 class HardforkSolutionChecker(BitcoinSolutionChecker):
     fork_id = 0
     signature_type_segwit = True
+    sighash_forkid = SIGHASH_FORKID
 
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
         """
@@ -19,7 +20,7 @@ class HardforkSolutionChecker(BitcoinSolutionChecker):
         hash_type: one of SIGHASH_NONE, SIGHASH_SINGLE, SIGHASH_ALL,
         optionally bitwise or'ed with SIGHASH_ANYONECANPAY
         """
-        if hash_type & SIGHASH_FORKID != SIGHASH_FORKID:
+        if hash_type & self.sighash_forkid != self.sighash_forkid:
             raise ScriptError()
         hash_type |= (self.fork_id << 8)
 

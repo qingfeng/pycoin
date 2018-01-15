@@ -9,5 +9,7 @@ from ..hardfork.SolutionChecker import HardforkSolutionChecker
 
 class UBTCSolutionChecker(HardforkSolutionChecker):
     signature_type_segwit = False
+    sighash_forkid = 0x8
+
     def append_signature(self, f):
         stream_bc_string(f, b'ub')
