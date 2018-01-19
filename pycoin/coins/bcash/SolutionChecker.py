@@ -5,6 +5,7 @@ from ...tx.script.flags import SIGHASH_FORKID
 from ..bitcoin.SolutionChecker import BitcoinSolutionChecker
 
 class BCashSolutionChecker(BitcoinSolutionChecker):
+    sighash_forkid = SIGHASH_FORKID
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
         """
         Return the canonical hash for a transaction. We need to
