@@ -18,6 +18,7 @@ setup(
         "pycoin.coins.btg",
         "pycoin.coins.sbtc",
         "pycoin.coins.ubtc",
+        "pycoin.coins.bcx",
         "pycoin.coins.bcd",
         "pycoin.contrib",
         "pycoin.convention",

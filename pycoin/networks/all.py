@@ -9,6 +9,7 @@ from pycoin.coins.bcash.Tx import Tx as BCashTx
 from pycoin.coins.btg.Tx import Tx as BTGTx
 from pycoin.coins.sbtc.Tx import Tx as SBTCTx
 from pycoin.coins.ubtc.Tx import Tx as UBTCTx
+from pycoin.coins.bcx.Tx import Tx as BCXTx
 from pycoin.coins.bcd.Tx import Tx as BCDTx
 
 from ..serialize import h2b
@@ -97,10 +98,19 @@ BUILT_IN_NETWORKS = [
         'UBTC', 'SuperBitcoin', 'mainnet',
         b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
         UBTCTx, BitcoinBlock,
-        h2b('E1476D44'), 8338, [
-            "seed.superbtca.com",
-            "seed.superbtca.info",
-            "seed.superbtc.org",
+        h2b('E1476D44'), 8333, [
+            "ip.ub.com",
+        ]
+    ),
+
+    # BCX mainnet
+    Network(
+        'BCX', 'BitcoinX', 'mainnet',
+        b'\x80', b'\x4b', b'\x3f', h2b("0488ADE4"), h2b("0488B21E"),
+        BCXTx, BitcoinBlock,
+        h2b('E1476D44'), 9005, [
+            "seed.bcx.org",
+            "seed.bcx.info"
         ]
     ),
 
