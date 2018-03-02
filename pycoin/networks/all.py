@@ -136,6 +136,17 @@ BUILT_IN_NETWORKS = [
         ]
     ),
 
+    # ULORD mainnet
+    Network(
+        'UT', 'UlordChain', 'mainnet',
+        b'\x80', b'\x44', b'\x3f', h2b("0488ADE4"), h2b("0488B21E"),
+        BitcoinTx, BitcoinBlock,
+        h2b('E1476D44'), 9888, [
+            "dnsseed1.ulord.one",
+            "dnsseed1.ulord.io",
+            "dnsseed1.fcash.cc"
+        ]
+    ),
 ]
 
 
