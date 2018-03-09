@@ -8,7 +8,6 @@ from ...serialize.bitcoin_streamer import (
 from ..hardfork.SolutionChecker import HardforkSolutionChecker
 
 class BCXSolutionChecker(HardforkSolutionChecker):
-    signature_type_segwit = True
     sighash_forkid = 0x10
 
 

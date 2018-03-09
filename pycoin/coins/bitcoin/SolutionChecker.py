@@ -1,5 +1,5 @@
 import io
-
+import logging
 from hashlib import sha256
 
 from ...encoding import double_sha256, from_bytes_32
@@ -37,7 +37,6 @@ OP_16 = BitcoinScriptTools.int_for_opcode("OP_16")
 
 ZERO32 = b'\0' * 32
 
-
 class BitcoinSolutionChecker(SolutionChecker):
     VM = BitcoinVM
     ScriptTools = BitcoinScriptTools
@@ -64,7 +63,6 @@ class BitcoinSolutionChecker(SolutionChecker):
         """
         if flags is None:
             flags = VERIFY_P2SH | VERIFY_WITNESS
-
         stack, solution_stack = self._check_solution(tx_context, flags, traceback_f)
 
         had_witness = False
@@ -205,7 +203,7 @@ class BitcoinSolutionChecker(SolutionChecker):
         if witness_version is not None:
             had_witness = True
             witness_program = tx_context.puzzle_script[2:]
-            if len(tx_context.solution_script) > 0:
+            if False and len(tx_context.solution_script) > 0:
                 err = errno.WITNESS_MALLEATED if flags & VERIFY_P2SH else errno.WITNESS_MALLEATED_P2SH
                 raise ScriptError("script sig is not blank on segwit input", err)
             self.check_witness_program(
@@ -233,7 +231,15 @@ class BitcoinSolutionChecker(SolutionChecker):
         return bytes(new_script)
 
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
-        return self.signature_for_hash_type_plainold(tx_out_script, unsigned_txs_out_idx, hash_type)
+        print('sig script', BitcoinScriptTools.disassemble(tx_out_script))
+        if self.tx.ALLOW_SEGWIT:
+            print("allow segwit")
+            return self.signature_for_hash_type_segwit(
+                tx_out_script, unsigned_txs_out_idx, hash_type)
+        else:
+            print('not allow segwit')
+            return self.signature_for_hash_type_plainold(
+                tx_out_script, unsigned_txs_out_idx, hash_type)
 
     def signature_for_hash_type_plainold(self, tx_out_script, unsigned_txs_out_idx, hash_type):
         """
@@ -414,4 +420,6 @@ class BitcoinSolutionChecker(SolutionChecker):
             self.check_solution(tx_context, flags=flags, **kwargs)
             return True
         except ScriptError:
+            logging.warn('is_signature_ok(): script error',
+                         exc_info=True)
             return False

@@ -1,11 +1,14 @@
-
 from .network import Network
 from .legacy_networks import NETWORKS
 
-from pycoin.tx.Tx import Tx as BitcoinTx
-from pycoin.block import Block as BitcoinBlock
+from pycoin.tx.Tx import (
+    Tx as BitcoinTx,
+    LegacyTx as LegacyBitcoinTx
+)
 
+from pycoin.block import Block as BitcoinBlock
 from pycoin.coins.bcash.Tx import Tx as BCashTx
+
 from pycoin.coins.btg.Tx import Tx as BTGTx
 from pycoin.coins.sbtc.Tx import Tx as SBTCTx
 from pycoin.coins.ubtc.Tx import Tx as UBTCTx
@@ -45,7 +48,7 @@ BUILT_IN_NETWORKS = [
         "LTC", "Litecoin", "mainnet",
         b'\xb0', b'\x30', b'\5',
         h2b('019d9cfe'), h2b('019da462'),
-        tx=BitcoinTx, block=BitcoinBlock,
+        tx=LegacyBitcoinTx, block=BitcoinBlock,
         bech32_hrp='lc'
     ),
 
@@ -54,7 +57,7 @@ BUILT_IN_NETWORKS = [
         "XLT", "Litecoin", "testnet",
         b'\xef', b'\x6f', b'\xc4',
         h2b('0436ef7d'), h2b('0436f6e1'),
-        tx=BitcoinTx, block=BitcoinBlock,
+        tx=LegacyBitcoinTx, block=BitcoinBlock,
         bech32_hrp='tl'
     ),
 
@@ -130,7 +133,7 @@ BUILT_IN_NETWORKS = [
     Network(
         'BTX', 'BitCore', 'mainnet',
         b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
-        BitcoinTx, BitcoinBlock,
+        LegacyBitcoinTx, BitcoinBlock,
         h2b('F9BEB4D9'), 8555, [
             "dnsseed1.bitcore.org", "dnsseed2.bitcore.org",
         ]
@@ -140,7 +143,7 @@ BUILT_IN_NETWORKS = [
     Network(
         'UT', 'UlordChain', 'mainnet',
         b'\x80', b'\x44', b'\x3f', h2b("0488ADE4"), h2b("0488B21E"),
-        BitcoinTx, BitcoinBlock,
+        LegacyBitcoinTx, BitcoinBlock,
         h2b('E1476D44'), 9888, [
             "dnsseed1.ulord.one",
             "dnsseed1.ulord.io",

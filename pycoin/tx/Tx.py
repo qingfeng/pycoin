@@ -436,3 +436,9 @@ class Tx(object):
                 raise BadSpendableError("unspents[%d] script mismatch!" % idx)
 
         return self.fee()
+
+class LegacyTx(Tx):
+    '''
+    Tx without segwit support
+    '''
+    ALLOW_SEGWIT = False

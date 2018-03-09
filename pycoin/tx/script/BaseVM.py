@@ -5,7 +5,6 @@ from . import errno
 from .ConditionalStack import ConditionalStack
 from .IntStreamer import IntStreamer
 
-
 class VMContext(object):
     MAX_SCRIPT_LENGTH = 10000
     MAX_BLOB_LENGTH = 520
@@ -98,6 +97,7 @@ class VM(object):
         verify_minimal_data = vmc.flags & VERIFY_MINIMALDATA and all_if_true
         opcode, data, pc = class_.ScriptStreamer.get_opcode(
             vmc.script, vmc.pc, verify_minimal_data=verify_minimal_data)
+
         if data and len(data) > vmc.MAX_BLOB_LENGTH:
             raise ScriptError("pushing too much data onto stack", errno.PUSH_SIZE)
 

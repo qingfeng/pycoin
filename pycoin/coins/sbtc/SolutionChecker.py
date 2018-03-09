@@ -8,6 +8,5 @@ from ...serialize.bitcoin_streamer import (
 from ..hardfork.SolutionChecker import HardforkSolutionChecker
 
 class SBTCSolutionChecker(HardforkSolutionChecker):
-    signature_type_segwit = False
     def append_signature(self, f):
         stream_bc_string(f, b'sbtc')

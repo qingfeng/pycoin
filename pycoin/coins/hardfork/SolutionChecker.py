@@ -6,7 +6,6 @@ from ..bitcoin.SolutionChecker import BitcoinSolutionChecker
 
 class HardforkSolutionChecker(BitcoinSolutionChecker):
     fork_id = 0
-    signature_type_segwit = True
     sighash_forkid = SIGHASH_FORKID
 
     def signature_hash(self, tx_out_script, unsigned_txs_out_idx, hash_type):
@@ -24,7 +23,7 @@ class HardforkSolutionChecker(BitcoinSolutionChecker):
             raise ScriptError()
         hash_type |= (self.fork_id << 8)
 
-        if self.signature_type_segwit:
+        if self.tx.ALLOW_SEGWIT:
             return self.signature_for_hash_type_segwit(tx_out_script, unsigned_txs_out_idx, hash_type)
         else:
             return self.signature_for_hash_type_plainold(tx_out_script, unsigned_txs_out_idx, hash_type)
