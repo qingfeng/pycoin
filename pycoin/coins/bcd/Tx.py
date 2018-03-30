@@ -10,6 +10,7 @@ from .Solver import BCDSolver
 class Tx(BaseTx):
     Solver = BCDSolver
     SolutionChecker = BCDSolutionChecker
+    ALLOW_SEGWIT = False
 
     def __init__(self, version, txs_in, txs_out, lock_time=0, unspents=None, pre_block_hash=None):
         super(Tx, self).__init__(version, txs_in, txs_out, lock_time=0, unspents=None)
