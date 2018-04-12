@@ -2,17 +2,21 @@ import hashlib
 
 from pycoin import encoding
 
-from pycoin.contrib import segwit_addr
+from pycoin.contrib import segwit_addr, cash_addr
 from pycoin.intbytes import iterbytes
 from pycoin.key.validate import netcode_and_type_for_text
 from pycoin.networks import (
-    bech32_hrp_for_netcode, pay_to_script_prefix_for_netcode
+    bech32_hrp_for_netcode,
+    cash_hrp_for_netcode,
+    pay_to_script_prefix_for_netcode
 )
 from pycoin.networks.default import get_current_netcode
 
 from pycoin.tx.pay_to import (
     ScriptPayToAddress, ScriptPayToScript,
-    ScriptPayToAddressWit, ScriptPayToScriptWit, script_obj_from_script
+    ScriptPayToAddressWit, ScriptPayToScriptWit,
+    ScriptMultisig,
+    script_obj_from_script
 )
 
 
@@ -26,6 +30,7 @@ def script_obj_from_address(address, netcodes=None):
         return ScriptPayToAddressWit(version=data[:1], hash160=data[2:])
     if key_type == 'pay_to_script_wit':
         return ScriptPayToScriptWit(version=data[:1], hash256=data[2:])
+
     if key_type == 'segwit':
         return script_obj_from_script(data)
     raise ValueError("bad text")
@@ -44,10 +49,32 @@ def address_for_pay_to_script(script, netcode=None):
         return encoding.hash160_sec_to_bitcoin_address(encoding.hash160(script), address_prefix=address_prefix)
     return None
 
-
 def address_for_pay_to_script_wit(script, netcode=None):
     if netcode is None:
         netcode = get_current_netcode()
     bech32_hrp = bech32_hrp_for_netcode(netcode)
     address = segwit_addr.encode(bech32_hrp, 0, iterbytes(hashlib.sha256(script).digest()))
+    return address
+
+def address_for_script_obj_cash(script, netcode=None):
+    if netcode is None:
+        netcode = get_current_netcode()
+
+    # reuse
+    hrp = cash_hrp_for_netcode(netcode)
+    if not hrp:
+        return None
+
+    if isinstance(script, ScriptPayToAddress):
+        type = 0
+        hashdata = script.hash160
+    elif isinstance(script, ScriptPayToScript):
+        type = 1
+        hashdata = script.hash160
+    elif isinstance(script, ScriptMultisig):
+        type = 1
+        hashdata = encoding.hash160(script.script())
+    else:
+        return None
+    address = cash_addr.encode(hrp, type, hashdata)
     return address

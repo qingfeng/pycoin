@@ -69,7 +69,8 @@ BUILT_IN_NETWORKS = [
         h2b('F9BEB4D9'), 8333, [
             "seed.bitcoinabc.org", "seed-abc.bitcoinforks.org",
             "btccash-seeder.bitcoinunlimited.info", "seed.bitprim.org",
-        ]
+        ],
+        cash_hrp='bitcoincash'
     ),
 
     # BTCGPU mainnet

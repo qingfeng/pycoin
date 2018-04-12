@@ -3,10 +3,11 @@ from .network import Network
 
 
 def clear_all_networks():
-    global _NETWORK_NAME_LOOKUP, _NETWORK_PREFIXES, _NETWORK_CODES, _BECH32_PREFIXES
+    global _NETWORK_NAME_LOOKUP, _NETWORK_PREFIXES, _NETWORK_CODES, _BECH32_PREFIXES, _CASH_PREFIXES
     _NETWORK_NAME_LOOKUP = {}
     _NETWORK_PREFIXES = {}
     _BECH32_PREFIXES = {}
+    _CASH_PREFIXES = {}
     _NETWORK_CODES = []
 
 
@@ -38,6 +39,11 @@ def register_network(network_info):
             _BECH32_PREFIXES[v] = []
         _BECH32_PREFIXES[v].append(code)
 
+    v = getattr(network_info, "cash_hrp", None)
+    if v is not None:
+        if v not in _CASH_PREFIXES:
+            _CASH_PREFIXES[v] = []
+        _CASH_PREFIXES[v].append(code)
 
 def _register_default_networks():
     for network in BUILT_IN_NETWORKS:
@@ -71,6 +77,12 @@ def bech32_prefixes():
     Return a dictionary of 2 byte prefixes that returns a list of netcodes that have this prefix.
     """
     return _BECH32_PREFIXES
+
+def cash_prefixes():
+    """
+    Return a dictionary of 2 byte prefixes that returns a list of netcodes that have this prefix.
+    """
+    return _CASH_PREFIXES
 
 
 def _lookup(netcode, property):
@@ -115,6 +127,9 @@ def bech32_hrp_for_netcode(netcode):
     "Return the bech32 hrp prefix for addresses for the given netcode (or None)"
     return _lookup(netcode, "bech32_hrp")
 
+def cash_hrp_for_netcode(netcode):
+    "Return the cash hrp prefix for addresses for the given netcode (or None)"
+    return _lookup(netcode, "cash_hrp")
 
 def pay_to_script_prefix_for_netcode(netcode):
     "Return the 1 byte prefix for pay-to-script addresses for the given netcode (or None)"

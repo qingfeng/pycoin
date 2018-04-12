@@ -2,10 +2,11 @@
 import binascii
 from .. import encoding
 from ..intbytes import byte2int, int2byte
-from ..networks.registry import network_codes, network_prefixes, bech32_prefixes
+from ..networks.registry import network_codes, network_prefixes, bech32_prefixes, cash_prefixes
 from ..serialize import h2b
 from ..coins.bitcoin.ScriptTools import BitcoinScriptTools, IntStreamer
 from ..contrib.segwit_addr import bech32_decode, convertbits
+from ..contrib.cash_addr import decode as decode_cash_addr
 
 DEFAULT_ADDRESS_TYPES = ["address", "pay_to_script"]
 
@@ -46,6 +47,9 @@ def netcode_and_type_for_data(data, netcodes=None):
 
 
 def netcode_and_type_for_text(text, netcodes=None):
+    if netcodes is None:
+        netcodes = network_codes()
+
     # check for "public pair"
     try:
         LENGTH_LOOKUP = {
@@ -63,14 +67,29 @@ def netcode_and_type_for_text(text, netcodes=None):
         pass
 
     try:
+        hrp, type, data = decode_cash_addr(None, text)
+        hashdata = b''.join(int2byte(d) for d in data)
+        l = cash_prefixes().get(hrp, [])
+        for netcode in netcodes:
+            if netcode in l:
+                if type == 0:
+                    # pay to pkh address
+                    return netcode, "address", hashdata
+                else:
+                    assert type == 1
+                    # multisig address
+                    return netcode, "pay_to_script", hashdata
+
+    except (TypeError, ValueError, KeyError):
+        pass
+
+    try:
         hrp, data = bech32_decode(text)
         decoded = convertbits(data[1:], 5, 8, False)
         decoded_data = b''.join(int2byte(d) for d in decoded)
         script = BitcoinScriptTools.compile_push_data_list([
             IntStreamer.int_to_script_bytes(data[0]), decoded_data])
         l = bech32_prefixes().get(hrp, [])
-        if netcodes is None:
-            netcodes = network_codes()
         for netcode in netcodes:
             if netcode in l:
                 return netcode, "segwit", script
