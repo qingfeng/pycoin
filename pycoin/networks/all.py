@@ -7,13 +7,14 @@ from pycoin.tx.Tx import (
 )
 
 from pycoin.block import Block as BitcoinBlock
-from pycoin.coins.bcash.Tx import Tx as BCashTx
 
+from pycoin.coins.bcash.Tx import Tx as BCashTx
 from pycoin.coins.btg.Tx import Tx as BTGTx
 from pycoin.coins.sbtc.Tx import Tx as SBTCTx
 from pycoin.coins.ubtc.Tx import Tx as UBTCTx
 from pycoin.coins.bcx.Tx import Tx as BCXTx
 from pycoin.coins.bcd.Tx import Tx as BCDTx
+from pycoin.coins.lbtc.Tx import Tx as LBTCTx
 
 from ..serialize import h2b
 
@@ -149,6 +150,18 @@ BUILT_IN_NETWORKS = [
             "dnsseed1.ulord.one",
             "dnsseed1.ulord.io",
             "dnsseed1.fcash.cc"
+        ]
+    ),
+
+    # LBTC mainnet
+    Network(
+        'LBTC', 'LightningBitcoin', 'mainnet',
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        LBTCTx, BitcoinBlock,
+        h2b('F9BEB4D9'), 9333, [
+            "seed1.lbtc.io",
+            "seed2.lbtc.io",
+            "seed3.lbtc.io"
         ]
     ),
 ]
