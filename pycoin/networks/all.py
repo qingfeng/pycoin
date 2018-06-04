@@ -173,6 +173,19 @@ BUILT_IN_NETWORKS = [
             "seed3.lbtc.io"
         ]
     ),
+
+    # OMNI bitcoin mainnet : xprv/xpub
+    Network(
+        'OMNI', "Bitcoin", "mainnet",
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        LegacyBitcoinTx, BitcoinBlock,
+        h2b('F9BEB4D9'), 8333, [
+            "seed.bitcoin.sipa.be", "dnsseed.bitcoin.dashjr.org",
+            "bitseed.xf2.org", "dnsseed.bluematt.me",
+        ],
+        bech32_hrp='bc'
+    ),
+ 
 ]
 
 
