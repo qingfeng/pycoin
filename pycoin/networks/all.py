@@ -44,6 +44,15 @@ BUILT_IN_NETWORKS = [
         bech32_hrp='tb'
     ),
 
+    # BTC bitcoin regtest : tprv/tpub
+    Network(
+        'XRT', "Bitcoin", "regtest",
+        b'\xef', b'\x6f', b'\xc4', h2b("04358394"), h2b("043587CF"),
+        BitcoinTx, BitcoinBlock,
+        h2b('FABFB5DA'), 18444, [],
+        bech32_hrp='bcrt'
+    ),
+
     # LTC litecoin mainnet : Ltpv/Ltub
     Network(
         "LTC", "Litecoin", "mainnet",
@@ -164,6 +173,19 @@ BUILT_IN_NETWORKS = [
             "seed3.lbtc.io"
         ]
     ),
+
+    # OMNI bitcoin mainnet : xprv/xpub
+    Network(
+        'OMNI', "Bitcoin", "mainnet",
+        b'\x80', b'\0', b'\5', h2b("0488ADE4"), h2b("0488B21E"),
+        LegacyBitcoinTx, BitcoinBlock,
+        h2b('F9BEB4D9'), 8333, [
+            "seed.bitcoin.sipa.be", "dnsseed.bitcoin.dashjr.org",
+            "bitseed.xf2.org", "dnsseed.bluematt.me",
+        ],
+        bech32_hrp='bc'
+    ),
+ 
 ]
 
 
