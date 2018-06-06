@@ -16,6 +16,7 @@ setup(
         "pycoin.coins.bitcoin",
         "pycoin.coins.hardfork",
         "pycoin.coins.btg",
+        "pycoin.coins.lbtc",
         "pycoin.coins.sbtc",
         "pycoin.coins.ubtc",
         "pycoin.coins.bcx",
